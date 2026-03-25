@@ -31,6 +31,14 @@ If you need to access the configuration or system menu of an original NEEO Brain
 3. **Restart the remote control:**
    Turn the remote control off and on again (or disconnect the old Brain from power). The remote control should now discover this new Brain via mDNS and connect to it.
 
+## Troubleshooting
+
+### Stuck in "Reconnecting..." Loop
+If your remote control is stuck on "Reconnecting..." and fails to discover the new Brain, you might need to force it into Pairing Mode to connect to a new Brain:
+1. Turn off the NEEO remote control.
+2. Turn the remote back on and **immediately press and hold the BACK button** (the physical button).
+3. The remote will enter Pairing Mode, allowing you to select and connect to the new custom Brain.
+
 ## Usage (Docker for NAS)
 
 A multi-stage Docker build is provided. Important for NAS setups: The container requires access to the local network (host network mode) so the mDNS broadcast (Bonjour) can reach the remote control.
