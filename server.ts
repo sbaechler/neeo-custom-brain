@@ -55,7 +55,7 @@ serve({
     }
     
     // Emulate systeminfo needed for discovery/pairing
-    if (url.pathname.includes('/v1/systeminfo')) {
+    if (url.pathname === '/systeminfo' || url.pathname === '/v1/systeminfo') {
       return Response.json({
         hardwareRegion: "EU",
         touchButtonPressed: false,
@@ -65,6 +65,7 @@ serve({
         licenseDescriptionRemote: "NEEO Remote",
         user: "custom@brain.local",
         version: "0.53.9",
+        firmwareVersion: "0.53.9-20180424-02ae61b-0810-163048",
         hostname: "NEEO-f0174939",
         ip: localIp,
         activeHandles: { activeHandlesCount: 0 },
