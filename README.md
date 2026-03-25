@@ -1,39 +1,43 @@
 # NEEO Custom Brain Emulator
 
-Dieses Projekt ersetzt das originale "Brain" der NEEO-Fernbedienung durch einen schlanken Service.
-Der Service läuft in **Bun**, sendet den nötigen mDNS-Broadcast aus (`_neeo._tcp`), nimmt die Anfragen der Fernbedienung entgegen und stellt ein Svelte-Frontend (SPA) bereit, das direkt auf der Fernbedienung geladen wird.
+This project replaces the original "Brain" of the NEEO remote control with a lightweight service.
+The service runs on **Bun**, broadcasts the necessary mDNS signal (`_neeo._tcp`), handles the remote's requests, and serves a Svelte frontend (SPA) that is loaded directly onto the remote control.
 
-## Funktionsweise (v1)
-- **Port 3000**: Simuliert die REST-API des Brains für den Handshake (`/v1/systeminfo`) und fängt Hardware-Buttons via WebSocket ab.
-- **Port 3200**: Stellt das Svelte-Frontend (SPA) unter dem Pfad `/eui/` bereit, auf den die Fernbedienung zugreift.
-- Das Frontend (die UI der Fernbedienung) baut eine WebSocket-Verbindung zu `Port 3200 /ws` auf und zeigt jeden gedrückten Hardware-Button der Fernbedienung in einer Liste an.
+## How it works (v1)
+- **Port 3000**: Simulates the Brain's REST API for the handshake (`/v1/systeminfo`) and intercepts hardware buttons via WebSocket.
+- **Port 3200**: Serves the Svelte frontend (SPA) at the path `/eui/`, which is accessed by the remote control.
+- The frontend (the UI on the remote) establishes a WebSocket connection to `Port 3200 /ws` and displays a list of every hardware button pressed on the remote.
 
-## Verwendung (Entwicklung)
+## Accessing the Original Brain's Admin Interface
+If you need to access the configuration or system menu of an original NEEO Brain (e.g., to configure Wi-Fi directly), you can reach its web-based Admin Interface via:
+`http://<brainIP>:3200/iui/index.html`
 
-1. **Frontend bauen:**
+## Usage (Development)
+
+1. **Build the frontend:**
    ```bash
    cd frontend
    bun install
    bun run build
    ```
 
-2. **Backend/Emulator starten:**
+2. **Start the backend/emulator:**
    ```bash
-   # Im Hauptverzeichnis
+   # In the root directory
    bun install
    bun run server.ts
    ```
 
-3. **Fernbedienung neustarten:**
-   Schalte die Fernbedienung aus und wieder ein (oder trenne das alte Brain vom Strom). Die Fernbedienung sollte nun per mDNS dieses neue Brain finden und sich verbinden.
+3. **Restart the remote control:**
+   Turn the remote control off and on again (or disconnect the old Brain from power). The remote control should now discover this new Brain via mDNS and connect to it.
 
-## Verwendung (Docker für NAS)
+## Usage (Docker for NAS)
 
-Es wird ein mehrstufiger Docker-Build bereitgestellt. Wichtig beim NAS: Der Container benötigt Zugriff auf das lokale Netzwerk (Host-Netzwerk-Modus), damit der mDNS-Broadcast (Bonjour) die Fernbedienung erreicht.
+A multi-stage Docker build is provided. Important for NAS setups: The container requires access to the local network (host network mode) so the mDNS broadcast (Bonjour) can reach the remote control.
 
 ```bash
 docker build -t neeo-custom-brain .
 docker run -d --net=host --name neeo-brain neeo-custom-brain
 ```
 
-*Hinweis:* Bei `macvlan` oder `host` Netzwerken auf Synology/QNAP NAS unbedingt darauf achten, dass Port 3000 und 3200 auf der Host-IP frei sind.
+*Note:* When using `macvlan` or `host` networking on Synology/QNAP NAS, ensure that ports 3000 and 3200 are available on the host IP.
