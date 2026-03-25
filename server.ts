@@ -6,7 +6,22 @@ console.log("Starting NEEO Brain Emulator...");
 
 // 1. mDNS Broadcast
 const bonjour = new Bonjour();
-bonjour.publish({ name: 'NEEO Custom Brain', type: 'neeo', port: 3000 });
+
+// Get current date formatted as YYYY-M-D for the 'upd' TXT record
+const today = new Date();
+const updDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+
+bonjour.publish({ 
+  name: 'NEEO Custom Brain', 
+  type: 'neeo', 
+  port: 3000,
+  txt: {
+    upd: updDate,
+    rel: "0.53.9-20180424-02ae61b-0810-163048",
+    reg: "EU",
+    hon: "NEEO-custom"
+  }
+});
 console.log('[mDNS] _neeo._tcp published on port 3000');
 
 // Connected clients
