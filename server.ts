@@ -10,16 +10,18 @@ const bonjour = new Bonjour();
 // Get current date formatted as YYYY-M-D for the 'upd' TXT record
 const today = new Date();
 const updDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+const brainId = "NEEO-f0174939";
 
 bonjour.publish({ 
-  name: 'NEEO Custom Brain', 
+  name: 'NEEO Wohnzimmer', 
+  host: `${brainId}.local`,
   type: 'neeo', 
   port: 3000,
   txt: {
     upd: updDate,
     rel: "0.53.9-20180424-02ae61b-0810-163048",
     reg: "EU",
-    hon: "NEEO-custom"
+    hon: brainId
   }
 });
 console.log('[mDNS] _neeo._tcp published on port 3000');
@@ -63,7 +65,7 @@ serve({
         licenseDescriptionRemote: "NEEO Remote",
         user: "custom@brain.local",
         version: "0.53.9",
-        hostname: "NEEO-custom",
+        hostname: "NEEO-f0174939",
         ip: localIp,
         activeHandles: { activeHandlesCount: 0 },
         temperature: "35.0"
