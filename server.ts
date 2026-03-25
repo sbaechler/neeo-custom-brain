@@ -63,7 +63,7 @@ serve({
         licenseDescriptionRemote: "NEEO Remote",
         user: "custom@brain.local",
         version: "0.53.9",
-        hostname: "NEEO-simulator",
+        hostname: "NEEO-custom",
         ip: localIp,
         activeHandles: { activeHandlesCount: 0 },
         temperature: "35.0"
