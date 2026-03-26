@@ -10,10 +10,10 @@ const bonjour = new Bonjour();
 // Get current date formatted as YYYY-M-D for the 'upd' TXT record
 const today = new Date();
 const updDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-const brainId = "NEEO-c0ffe000";
+const brainId = "NEEO-f0174939";
 
 bonjour.publish({ 
-  name: 'NEEO Custom', 
+  name: 'NEEO Wohnzimmer', 
   host: `${brainId}.local`,
   type: 'neeo', 
   port: 3000,
