@@ -17,6 +17,7 @@ bonjour.publish({
   host: `${brainId}.local`,
   type: 'neeo', 
   port: 3000,
+  probe: false,
   txt: {
     upd: updDate,
     rel: "0.53.9-20180424-02ae61b-0810-163048",
@@ -45,6 +46,7 @@ const localIp = getLocalIp();
 // 2. Port 3000: Brain API & Remote WebSocket
 serve({
   port: 3000,
+  probe: false,
   fetch(req, server) {
     const url = new URL(req.url);
     console.log(`[Remote -> API:3000] ${req.method} ${url.pathname}`);
@@ -95,10 +97,23 @@ serve({
     }
 
     // Emulate checkAirkey needed for recovery mode pairing
+    // The real brain compares the host header with the currentIp and returns a 302 if it doesn't match.
     if (url.pathname === '/projects/checkAirkey') {
-      return new Response("NOT_THE_BRAIN_YOU_ARE_LOOKING_FOR", { status: 304 });
+      return new Response("NOT_THE_BRAIN_YOU_ARE_LOOKING_FOR", { status: 200 });
     }
 
+
+    // Serve the TR2 GUI XML file
+    if (url.pathname === '/projects/home/tr2/gui_xml') {
+      const xmlPath = join(process.cwd(), 'data', 'gui_xml.xml');
+      const xmlFile = Bun.file(xmlPath);
+      return new Response(xmlFile, {
+        headers: {
+          'Content-Type': 'application/xml',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
 
     // Capture everything else to avoid 404s
     return Response.json({ success: true, message: "Mocked response" });
