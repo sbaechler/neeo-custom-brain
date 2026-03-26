@@ -107,11 +107,31 @@ serve({
     if (url.pathname === '/projects/home/tr2/gui_xml') {
       const xmlPath = join(process.cwd(), 'data', 'gui_xml.xml');
       const xmlFile = Bun.file(xmlPath);
+      
+      const acceptEncoding = req.headers.get('accept-encoding') || '';
+      if (acceptEncoding.includes('gzip')) {
+        const zlib = require('zlib');
+        // using await xmlFile.arrayBuffer()
+        return xmlFile.arrayBuffer().then(buffer => {
+          const compressed = zlib.gzipSync(Buffer.from(buffer));
+          return new Response(compressed, {
+            headers: {
+              'Content-Type': 'application/xml',
+              'Content-Encoding': 'gzip',
+              'Access-Control-Allow-Origin': '*'
+            }
+          });
+        });
+      }
+
       return new Response(xmlFile, {
         headers: {
           'Content-Type': 'application/xml',
           'Access-Control-Allow-Origin': '*'
         }
+      });
+    }
+
       });
     }
 
