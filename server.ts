@@ -90,6 +90,15 @@ serve({
       });
     }
 
+    // Emulate checkAirkey needed for recovery mode pairing
+    if (url.pathname === '/projects/checkAirkey') {
+      return Response.json({
+        "status": "success",
+        "message": "Airkey checked successfully"
+      });
+    }
+
+
     // Capture everything else to avoid 404s
     return Response.json({ success: true, message: "Mocked response" });
   },
