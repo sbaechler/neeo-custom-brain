@@ -58,7 +58,7 @@ serve({
     if (url.pathname === '/systeminfo' || url.pathname === '/v1/systeminfo') {
       return Response.json({
         hardwareRegion: "EU",
-        touchButtonPressed: false,
+        touchButtonPressed: true,
         hardwareRevision: 5,
         hardwareType: "NEEO",
         isProLicensed: false,
