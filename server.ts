@@ -10,10 +10,10 @@ const bonjour = new Bonjour();
 // Get current date formatted as YYYY-M-D for the 'upd' TXT record
 const today = new Date();
 const updDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-const brainId = "NEEO-f0174939";
+const brainId = "NEEO-c0ffe000";
 
 bonjour.publish({ 
-  name: 'NEEO Wohnzimmer', 
+  name: 'NEEO Custom', 
   host: `${brainId}.local`,
   type: 'neeo', 
   port: 3000,
@@ -64,12 +64,29 @@ serve({
         isProLicensed: false,
         licenseDescriptionRemote: "NEEO Remote",
         user: "custom@brain.local",
-        version: "0.53.9",
+        version: "0.53.9-02ae61b",
         firmwareVersion: "0.53.9-20180424-02ae61b-0810-163048",
-        hostname: "NEEO-f0174939",
+        hostname: brainId,
         ip: localIp,
+        lanip: localIp,
+        wlanip: localIp,
+        "wlanregion": "EU",
         activeHandles: { activeHandlesCount: 0 },
-        temperature: "35.0"
+        temperature: "35.0",
+  "tr2version": "0.53.8",
+  "totalmem": 1053401088,
+  "freemem": 594673664,
+  "wlancountry": "DE",
+  "wlaninfo": [
+    "RSSI=-45",
+    "LINKSPEED=72",
+    "NOISE=9999",
+    "FREQUENCY=2437"
+  ],
+  "uptime": 7085,
+  "loadavgShort": 0.16552734375,
+  "loadavgMid": 0.107421875,
+  "loadavgLong": 0.07177734375,
       });
     }
 
@@ -99,6 +116,7 @@ serve({
   port: 3200,
   async fetch(req, server) {
     const url = new URL(req.url);
+    console.log(`[Remote -> API:3200] ${req.method} ${url.pathname}`);
     
     // WebSocket endpoint for our Svelte App
     if (url.pathname === '/ws') {
