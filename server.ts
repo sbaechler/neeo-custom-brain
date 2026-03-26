@@ -159,3 +159,12 @@ serve({
 
 console.log(`Brain API Simulator listening on http://${localIp}:3000`);
 console.log(`EUI Web Interface listening on http://${localIp}:3200/eui/`);
+// Handle graceful shutdown
+process.on('SIGINT', () => {
+  console.log("\nShutting down... Unpublishing mDNS.");
+  bonjour.unpublishAll(() => {
+    bonjour.destroy();
+    console.log("mDNS unpublished. Goodbye!");
+    process.exit(0);
+  });
+});
