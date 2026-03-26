@@ -48,6 +48,10 @@ serve({
   fetch(req, server) {
     const url = new URL(req.url);
     console.log(`[Remote -> API:3000] ${req.method} ${url.pathname}`);
+    console.log("Headers:");
+    for (const [key, value] of req.headers.entries()) {
+      console.log(`  ${key}: ${value}`);
+    }
     
     // Check if the remote is trying to open a WebSocket
     if (req.headers.get("upgrade")?.toLowerCase() === "websocket") {
@@ -92,10 +96,7 @@ serve({
 
     // Emulate checkAirkey needed for recovery mode pairing
     if (url.pathname === '/projects/checkAirkey') {
-      return Response.json({
-        "status": "success",
-        "message": "Airkey checked successfully"
-      });
+      return new Response("NOT_THE_BRAIN_YOU_ARE_LOOKING_FOR", { status: 304 });
     }
 
 
@@ -126,7 +127,11 @@ serve({
   async fetch(req, server) {
     const url = new URL(req.url);
     console.log(`[Remote -> API:3200] ${req.method} ${url.pathname}`);
-    
+    console.log("Headers:");
+    for (const [key, value] of req.headers.entries()) {
+      console.log(`  ${key}: ${value}`);
+    }
+
     // WebSocket endpoint for our Svelte App
     if (url.pathname === '/ws') {
       if (server.upgrade(req, { data: { source: 'frontend' } })) return;
@@ -135,6 +140,7 @@ serve({
     
     let path = url.pathname;
     
+    // Remote typically asks for /intro/index.html, /cordova.js, /eui/index.html etc.
     if (path === '/' || path === '/eui' || path === '/eui/') {
       path = '/index.html';
     } else if (path.startsWith('/eui/')) {
@@ -144,12 +150,19 @@ serve({
     let filePath = join(process.cwd(), 'frontend', 'dist', path);
     let file = Bun.file(filePath);
     
-    if (!(await file.exists())) {
-      filePath = join(process.cwd(), 'frontend', 'dist', 'index.html');
-      file = Bun.file(filePath);
+    // Serve exact file if it exists (e.g., /intro/app.js)
+    if (await file.exists()) {
+      return new Response(file);
     }
     
-    return new Response(file);
+    // Fallback for SPA routing if it's an HTML/UI route
+    if (!path.includes('.')) {
+      filePath = join(process.cwd(), 'frontend', 'dist', 'index.html');
+      file = Bun.file(filePath);
+      if (await file.exists()) return new Response(file);
+    }
+    
+    return new Response(`File not found: ${path}`, { status: 404 });
   },
   websocket: {
     message(ws, message) {

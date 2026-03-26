@@ -1,0 +1,117 @@
+<!doctype html>
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8">
+  <title>NEEO App Intro</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="viewport-fit=cover, initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src gap: *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <style>.spinner {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  opacity: 0;
+  -moz-animation: fadeInLoader 300ms 500ms forwards;
+  -webkit-animation: fadeInLoader 300ms 500ms forwards;
+  animation: fadeInLoader 300ms 500ms forwards;
+}
+
+@-webkit-keyframes fadeInLoader {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@-moz-keyframes fadeInLoader {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeInLoader {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.launch-overlay {
+  opacity: 1;
+  transition: opacity .3s ease-in-out;
+  -moz-transition: opacity .3s ease-in-out;
+  -webkit-transition: opacity .3s ease-in-out;
+}
+.launch-overlay.ng-hide-remove {
+  transition: opacity .3s ease-in-out;
+  -moz-transition: opacity .3s ease-in-out;
+  -webkit-transition: opacity .3s ease-in-out;
+}
+.launch-overlay.ng-hide {
+  opacity: 0;
+  display: block!important;
+}
+</style>
+  <!-- inject:styles:css -->
+  <link rel="stylesheet" href="styles-3f5a9c2337.css">
+  <!-- endinject -->
+</head>
+
+<body class="iui intro">
+  <div style="position: absolute; background: white; top: 0; right: 0; bottom: 0; left: 0; z-index: 999;" ng-show="showLoader" fadeout class="launch-overlay">
+  <div style="position: absolute;width: 100%;height: 100%;display: table;">
+    <div style="position: relative;height: 10vw;width: 10vw;display: table-cell;vertical-align: middle;text-align: center;">
+      <img class="spinner" src="../images/loading.svg">
+    </div>
+  </div>
+</div>
+
+  <ion-nav-bar class="bar bar-clear" ng-controller="TransitCtrl">
+    <ion-nav-buttons side="left">
+      <button class="button button-clear button-positive button-icon icon icon-navleft" ng-if="backVisible" ng-disabled="!backEnabled" ng-click="onBack()"></button>
+    </ion-nav-buttons>
+    <ion-nav-title></ion-nav-title>
+    <ion-nav-buttons side="right">
+      <button class="button button-positive instant-hide" ng-if="nextVisible" ng-disabled="!nextEnabled" ng-click="onNext()">{{nextLabel}}</button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-nav-view></ion-nav-view>
+  <!-- inject:vendor:js -->
+  <script src="../vendor-f23c5c84ca.js"></script>
+  <!-- endinject -->
+  <script type="text/javascript">
+
+  var isDesktopBrowser = !!window.chrome || !!window.safari || !!window.firefox;
+  if (navigator.userAgent.match(/(Android)/) && !isDesktopBrowser) {
+    var src = '../cordova-support/android/cordova.js';
+  } else if (navigator.userAgent.match(/(iPhone|iPod|iPad)/) && !isDesktopBrowser) {
+    var src = '../cordova-support/ios/cordova.js';
+  }
+  if (!isDesktopBrowser && src) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.type = 'text/javascript';
+    document.body.appendChild(script);
+  }
+  </script>
+  <!-- inject:app:js -->
+  <script src="app-ddeb58ef9c.js"></script>
+  <!-- endinject -->
+  <div class="version">
+    0.50.0
+  </div>
+  <script type="text/javascript">
+  // bootstrap angular on device ready only on mobile devices that provide a
+  // window.cordova object - because we need to wait for cordova js to be loaded
+  // otherwise no plugin will work (asynch, my friend)
+  var app = 'introApp';
+  var debug = JSON.parse('false');
+  function ready() {
+    angular.bootstrap(document, [app]);
+  }
+  function load() {
+    if (window.cordova) {
+      document.addEventListener('deviceready', ready, false);
+    } else {
+      ready();
+    }
+  }
+  window.addEventListener('load', load, false);
+  </script>
+</body>
+
+</html>

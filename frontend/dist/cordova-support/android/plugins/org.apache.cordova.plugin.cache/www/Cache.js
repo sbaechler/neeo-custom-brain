@@ -1,0 +1,1 @@
+cordova.define("org.apache.cordova.plugin.cache.Cache",function(c,e,a){var o=c("cordova/exec"),r={clear:function(c,e){o(c,e,"Cache","clear",[])},cleartemp:function(c,e){o(c,e,"Cache","cleartemp",[])}};a.exports=r});

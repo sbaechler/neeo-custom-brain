@@ -1,0 +1,1 @@
+cordova.define("cordova-plugin-whitelist.whitelist",function(t,e,i){if(!document.querySelector("meta[http-equiv=Content-Security-Policy]")){setInterval(function(){},1e4)}});
