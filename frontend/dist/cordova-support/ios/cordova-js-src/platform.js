@@ -1,1 +1,0 @@
-module.exports={id:"ios",bootstrap:function(){require("cordova/modulemapper").clobbers("cordova/plugin/ios/console","window.console"),require("cordova/channel").onNativeReady.fire()}};
